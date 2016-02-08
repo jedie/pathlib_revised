@@ -4,7 +4,7 @@ source = pathlib_revised
 
 [report]
 # Theres files will only be used with open(..., "r"):
-omit = test_*, */tests/*
+omit = 	pathlib_revised\tests\*, test_*, */tests/*
 
 # Regexes for lines to exclude from consideration
 exclude_lines =
