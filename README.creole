@@ -118,7 +118,19 @@ So you can use it with older Python Version, too.
 
 == DirEntryPath
 
-The [[https://github.com/jedie/pathlib_revised/blob/master/pathlib_revised/dir_entry_path.py|DirEntryPath]] holds more cached information.
+The [[https://github.com/jedie/pathlib_revised/blob/master/pathlib_revised/dir_entry_path.py|DirEntryPath]] holds more cached information:
+
+| //instance//**.dir_entry**   | os.DirEntry() instance
+| //instance//**.path**        | str or bytes of the path, from: //os.DirEntry()//**.path**
+| //instance//**.is_symlink    | bool from //os.DirEntry()//**.is_symlink()**
+| //instance//**.is_file       | bool from //os.DirEntry()//**.is_file(follow_symlinks=False)**
+| //instance//**.is_dir        | bool from //os.DirEntry()//**.is_dir(follow_symlinks=False)**
+| //instance//**.stat          | bool from //os.DirEntry()//**.stat(follow_symlinks=False)**
+| //instance//**.path_instance | **Path2()** instance
+| //instance//**.resolved_path | **Path2()** instance from **.resolve()** (If resolve errored: **None**)
+| //instance//**.resolve_error | The error Instance, if .resolve() failed.
+
+
 Create a instance by feeding a [[https://docs.python.org/3/library/os.html#os.DirEntry|os.DirEntry]] instance, e.g.:
 {{{
 >>> from pathlib_revised import Path2, DirEntryPath
