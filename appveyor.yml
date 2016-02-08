@@ -77,7 +77,7 @@ on_finish:
     - coverage combine
     - coverage report
 
-    - set COVERALLS_REPO_TOKEN=3uErcCZvScP0LKMj9qcgab67qRsu8XnSQ
+    - set COVERALLS_REPO_TOKEN=JkT1M1GpIxJxA5GmDIm5Sk4br38hP5Bn1
     - coveralls
 
     # http://www.appveyor.com/docs/how-to/rdp-to-build-worker
