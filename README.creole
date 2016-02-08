@@ -102,7 +102,7 @@ PosixPath2('/home/username/sub/dir')
 <PosixDirEntry: 'directory'>
 <PosixDirEntry: '...'>
 }}}
-It's a generator that yields os.**[[https://docs.python.org/3/library/os.html#os.DirEntry|DirEntry]] instances.
+It's a generator that yields os.**[[https://docs.python.org/3/library/os.html#os.DirEntry|DirEntry]]** instances.
 **scandir** is new in Python 3.5, but in Path2() is will fall-back to the external [[https://pypi.python.org/pypi/scandir|scandir]] module.
 
 
