@@ -1,5 +1,13 @@
 == pathlib_revised
 
+Expand the origin Python [[https://docs.python.org/3/library/pathlib.html|pathlib]] module:
+
+* work-a-round for Windows MAX_PATH limit, by adding {{{\\?\}}} path prefix
+* add missing stuff, like: {{{makedirs}}}, {{{utime}}}, {{{scandir}}} etc.
+
+There is also the class, called [[https://github.com/jedie/pathlib_revised/blob/master/pathlib_revised/dir_entry_path.py|DirEntryPath]] that holds more cached information than [[https://docs.python.org/3/library/os.html#os.DirEntry|os.DirEntry]]
+
+
 * python 3.4 or newer only
 * Beta state
 
@@ -9,6 +17,147 @@ Please, try, fork and contribute! ;)
 | {{https://ci.appveyor.com/api/projects/status/py5sl38ql3xciafc?svg=true|Build Status on appveyor.com}} | [[https://ci.appveyor.com/project/jedie/pathlib_revised/history|ci.appveyor.com/project/jedie/pathlib_revised]] |
 | {{https://coveralls.io/repos/jedie/pathlib_revised/badge.svg|Coverage Status on coveralls.io}} | [[https://coveralls.io/r/jedie/pathlib_revised|coveralls.io/r/jedie/pathlib_revised]] |
 | {{https://requires.io/github/jedie/pathlib_revised/requirements.svg?branch=master|Requirements Status on requires.io}} | [[https://requires.io/github/jedie/pathlib_revised/requirements/|requires.io/github/jedie/pathlib_revised/requirements/]] |
+
+
+=== Windows MAX_PATH
+
+There is a limit in the Windows API: Path can't be longer than 259 characters (called: "MAX_PATH").
+The work-a-round is to add the prefix {{{\\?\}}} to every absolute path, see:
+
+* https://msdn.microsoft.com/en-us/library/aa365247.aspx#maxpath
+
+The **Path2()** class has the additional property **extended_path**:
+{{{
+>>> from pathlib_revised import Path2
+>>> p=Path2("c:\foo\bar")
+>>> p.extended_path
+'\\?\c:\foo\bar'
+}}}
+
+All existing methods of **Path2()** will internally use **extended_path**, so that the **MAX_PATH** limit is not longer a problem.
+
+**extended_path** exist also under Posix-Systems, but it's the same as **path**:
+{{{
+>>> p=Path2("/foo/bar")
+>>> p.path
+'/foo/bar'
+>>> p.extended_path
+'/foo/bar'
+}}}
+
+
+=== Additional methods
+
+* os.**[[https://docs.python.org/3/library/os.html#os.listdir|listdir()]]**
+{{{
+>>> Path2("/").listdir()
+['sbin', 'boot', 'tmp', 'sys', 'var', 'dev', 'usr', 'root', 'home', ..., 'initrd.img', 'vmlinuz']
+}}}
+
+* shutil.**[[https://docs.python.org/3/library/shutil.html#shutil.copyfile|copyfile()]]**
+{{{
+>>> Path2("a_file.txt").copyfile(Path2("a_file_copy.txt"))
+}}}
+
+* os.path.**[[https://docs.python.org/3/library/os.path.html#os.path.expanduser|expanduser()]]**
+{{{
+>>> p=Path2("~", "sub", "dir")
+>>> p
+PosixPath2('~/sub/dir')
+>>> p.expanduser()
+PosixPath2('/home/username/sub/dir')
+}}}
+
+* os.**[[https://docs.python.org/3/library/os.html#os.link|link()]]**
+{{{
+>>> Path2("source.txt").link(Path2("hardlinked.txt"))
+}}}
+
+* os.**[[https://docs.python.org/3/library/os.html#os.makedirs|makedirs()]]**
+{{{
+>>> Path2("a", "new", "path").makedirs()
+}}}
+
+* os.**[[https://docs.python.org/3/library/os.html#os.utime|utime()]]**
+{{{
+>>> mtime = 111111111 # UTC: 1973-07-10 00:11:51
+>>> atime = 222222222 # UTC: 1977-01-16 01:23:42
+
+>>> p.Path2("dir/or/file")
+>>> p.utime(times=(atime, mtime))
+>>> stat = p.stat()
+>>> stat.st_atime
+222222222
+>>> stat.st_mtime
+111111111
+}}}
+
+* os.**[[https://docs.python.org/3/library/os.html#os.scandir()|scandir()]]**
+{{{
+>>> p=Path2("/foo/bar")
+>>> for dir_item in p.scandir():
+...     print(dir_item)
+...
+<PosixDirEntry: 'filename'>
+<PosixDirEntry: 'directory'>
+<PosixDirEntry: '...'>
+}}}
+It's a generator that yields os.**[[https://docs.python.org/3/library/os.html#os.DirEntry|DirEntry]] instances.
+**scandir** is new in Python 3.5, but in Path2() is will fall-back to the external [[https://pypi.python.org/pypi/scandir|scandir]] module.
+
+
+
+You miss a method? Please, fork, implement, add tests and send a pull request! ;)
+
+
+=== misc
+
+Path2() hat the **.path** property, that is normally new in Python 3.4.5 and 3.5.2
+So you can use it with older Python Version, too.
+
+
+== DirEntryPath
+
+The [[https://github.com/jedie/pathlib_revised/blob/master/pathlib_revised/dir_entry_path.py|DirEntryPath]] holds more cached information.
+Create a instance by feeding a [[https://docs.python.org/3/library/os.html#os.DirEntry|os.DirEntry]] instance, e.g.:
+{{{
+>>> from pathlib_revised import Path2, DirEntryPath
+>>> src_path = Path2("foo/")
+>>> for dir_entry in src_path.scandir():
+...     dir_entry_path = DirEntryPath(dir_entry)
+...     print(dir_entry_path.pformat())
+ *** <DirEntryPath foo/file1> :
+path.......: 'foo/file1'
+path instance..: PosixPath2('foo/file1')
+resolved path..: PosixPath2('/home/bar/foo/file1')
+resolve error..: None
+different path.: True
+is symlink.....: False
+is file........: False
+is dir.........: True
+stat.size......: 38
+ *** <DirEntryPath foo/BrokenSymlink.ext> :
+path.......: 'foo/BrokenSymlink.ext'
+path instance..: PosixPath2('foo/BrokenSymlink.ext')
+resolved path..: None
+resolve error..: FileNotFoundError(2, 'No such file or directory')
+different path.: True
+is symlink.....: True
+is file........: False
+is dir.........: False
+stat.size......: 15
+ *** <DirEntryPath foo/README.creole> :
+path.......: 'foo/README.creole'
+path instance..: PosixPath2('foo/README.creole')
+resolved path..: PosixPath2('/home/bar/foo/README.creole')
+resolve error..: None
+different path.: True
+is symlink.....: False
+is file........: True
+is dir.........: False
+stat.size......: 4802
+}}}
+
 
 
 == History

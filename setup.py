@@ -218,6 +218,9 @@ setup(
         "Programming Language :: Python :: 3.5",
         "Programming Language :: Python :: 3 :: Only",
         "Operating System :: OS Independent",
+        "Topic :: Software Development",
+        "Topic :: Software Development :: Libraries",
+        "Topic :: Software Development :: Libraries :: Python Modules",
     ],
     # test_suite="runtests.cli_run",
 )

@@ -21,6 +21,9 @@ from pathlib_revised.pathlib import WindowsPath2, PosixPath2
 from pathlib_revised.tests.base import BaseTempTestCase
 
 
+IS_NT = os.name == 'nt'
+
+
 class TestDirEntryPath(BaseTempTestCase):
     """
     Test DirEntryPath() on all platforms
@@ -49,7 +52,7 @@ class TestDirEntryPath(BaseTempTestCase):
         self.assertEqual(dir_entry_path.resolve_error, None)
 
 
-@unittest.skipIf(os.name != 'nt', 'test requires a Windows-compatible system')
+@unittest.skipUnless(IS_NT, 'test requires a Windows-compatible system')
 class TestDirEntryPathWindows(BaseTempTestCase):
 
     # TODO: Make similar tests under Linux, too!
@@ -161,4 +164,48 @@ class TestDirEntryPathWindows(BaseTempTestCase):
         # can't be resole, because source was renamed:
         self.assertEqual(dir_entry_path2.resolved_path, None)
         self.assertIsInstance(dir_entry_path2.resolve_error, FileNotFoundError)
+
+
+@unittest.skipIf(IS_NT, 'test requires a POSIX-compatible system')
+class TestDirEntryPathPosix(BaseTempTestCase):
+    def test_symlink(self):
+        src_file = Path2("source_file.txt")
+        src_file.touch()
+
+        dst_file = Path2("destination.txt")
+        dst_file.symlink_to(src_file)
+
+        scan_result = list(Path2(".").scandir())
+        scan_result.sort(key=lambda x: x.path)
+        self.assertEqual([f.path for f in scan_result], ['./destination.txt', './source_file.txt'])
+
+        for dir_entry in scan_result:
+            dir_entry_path = DirEntryPath(dir_entry)
+            info = dir_entry_path.pformat()
+            # print(info)
+            if dir_entry_path.path == "./source_file.txt":
+                self.assertFalse(dir_entry_path.is_symlink)
+                self.assertTrue(dir_entry_path.is_file)
+            elif dir_entry_path.path == "./destination.txt":
+                self.assertTrue(dir_entry_path.is_symlink)
+                self.assertFalse(dir_entry_path.is_file)
+            else:
+                self.fail()
+
+            self.assertEqual(dir_entry_path.resolved_path, Path2(self.temp_root_path, "source_file.txt"))
+
+        # Create a broken symlink, by deleting the source file:
+        src_file.unlink()
+
+        scan_result = list(Path2(".").scandir())
+        self.assertEqual([f.path for f in scan_result], ['./destination.txt'])
+
+        dir_entry_path = DirEntryPath(scan_result[0])
+        info = dir_entry_path.pformat()
+        print(info)
+        self.assertEqual(dir_entry_path.path, "./destination.txt")
+        self.assertEqual(dir_entry_path.resolved_path, None) # <- broken, so can't be resolve
+        self.assertIsInstance(dir_entry_path.resolve_error, FileNotFoundError) # <- the error instance
+        self.assertTrue(dir_entry_path.is_symlink)
+        self.assertFalse(dir_entry_path.is_file)
 
