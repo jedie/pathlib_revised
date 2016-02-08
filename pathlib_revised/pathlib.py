@@ -15,8 +15,6 @@ import shutil
 
 # Use the built-in version of scandir/walk if possible, otherwise
 # use the scandir module version
-import functools
-
 try:
     from os import scandir # new in Python 3.5
 except ImportError:
@@ -24,10 +22,8 @@ except ImportError:
     try:
         from scandir import scandir
     except ImportError:
-        raise ImportError("For Python <2.5: Please install 'scandir' !")
+        raise ImportError("For Python <3.5: Please install 'scandir' !")
 
-
-log = logging.getLogger("phlb.%s" % __name__)
 
 IS_WINDOWS = os.name == 'nt'
 
