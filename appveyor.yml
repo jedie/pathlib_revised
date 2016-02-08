@@ -67,7 +67,6 @@ clone_folder: c:/pyhardlinkbackup_clone
 clone_depth: 5 # clone entire repository history if not defined
 
 install:
-    - pip install --upgrade pip
     - pip install coveralls nose
     - pip install -e .
 
