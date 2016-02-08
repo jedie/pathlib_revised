@@ -44,8 +44,8 @@ class DirEntryPath:
         """
         :param dir_entry: os.DirEntry() instance
         """
-        self.dir_entry = dir_entry
-        self.path = dir_entry.path
+        self.dir_entry = dir_entry # os.DirEntry() instance
+        self.path = dir_entry.path # str or bytes of the path, from: os.DirEntry().path
 
         self.is_symlink = dir_entry.is_symlink()
         self.is_file = dir_entry.is_file(follow_symlinks=False)
