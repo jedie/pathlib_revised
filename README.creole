@@ -174,7 +174,8 @@ stat.size......: 4802
 
 == History
 
-* **dev**
+* 08.02.2016 - v0.1.0
+** code cleanup + more tests
 ** move files form [[https://github.com/jedie/PyHardLinkBackup/tree/bb29eda6a0724c060f0e39773bdaecc325e9fea2|PyHardLinkBackup]]
 
 
