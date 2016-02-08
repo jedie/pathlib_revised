@@ -1,14 +1,14 @@
-== pathlib2
+== pathlib_revised
 
 * python 3.4 or newer only
 * Beta state
 
 Please, try, fork and contribute! ;)
 
-| {{https://travis-ci.org/jedie/pathlib2.svg|Build Status on travis-ci.org}} | [[https://travis-ci.org/jedie/pathlib2/|travis-ci.org/jedie/pathlib2]] |
-| {{https://ci.appveyor.com/api/projects/status/py5sl38ql3xciafc?svg=true|Build Status on appveyor.com}} | [[https://ci.appveyor.com/project/jedie/pathlib2/history|ci.appveyor.com/project/jedie/pathlib2]] |
-| {{https://coveralls.io/repos/jedie/pathlib2/badge.svg|Coverage Status on coveralls.io}} | [[https://coveralls.io/r/jedie/pathlib2|coveralls.io/r/jedie/pathlib2]] |
-| {{https://requires.io/github/jedie/pathlib2/requirements.svg?branch=master|Requirements Status on requires.io}} | [[https://requires.io/github/jedie/pathlib2/requirements/|requires.io/github/jedie/pathlib2/requirements/]] |
+| {{https://travis-ci.org/jedie/pathlib_revised.svg|Build Status on travis-ci.org}} | [[https://travis-ci.org/jedie/pathlib_revised/|travis-ci.org/jedie/pathlib_revised]] |
+| {{https://ci.appveyor.com/api/projects/status/py5sl38ql3xciafc?svg=true|Build Status on appveyor.com}} | [[https://ci.appveyor.com/project/jedie/pathlib_revised/history|ci.appveyor.com/project/jedie/pathlib_revised]] |
+| {{https://coveralls.io/repos/jedie/pathlib_revised/badge.svg|Coverage Status on coveralls.io}} | [[https://coveralls.io/r/jedie/pathlib_revised|coveralls.io/r/jedie/pathlib_revised]] |
+| {{https://requires.io/github/jedie/pathlib_revised/requirements.svg?branch=master|Requirements Status on requires.io}} | [[https://requires.io/github/jedie/pathlib_revised/requirements/|requires.io/github/jedie/pathlib_revised/requirements/]] |
 
 
 == History
@@ -19,5 +19,5 @@ Please, try, fork and contribute! ;)
 
 == Links
 
-* https://pypi.python.org/pypi/pathlib2/
+* https://pypi.python.org/pypi/pathlib_revised/
 
