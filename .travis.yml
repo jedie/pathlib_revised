@@ -29,8 +29,8 @@ before_install:
     - echo ${TRAVIS_PYTHON_VERSION}
 
 install:
-    - pip install -e .
     - pip install coveralls nose
+    - pip install -e .
 
 script:
     - coverage run --source=pathlib_revised -m nose -v
