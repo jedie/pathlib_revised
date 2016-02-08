@@ -1,0 +1,45 @@
+language: python
+
+python:
+    - "3.4"
+    - "3.5"
+
+sudo: false
+
+os:
+    # Python builds are not available on the OSX environment.
+    # see: https://docs.travis-ci.com/user/languages/python
+    #- osx
+    - linux
+
+virtualenv:
+    system_site_packages: false
+
+before_install:
+    # https://docs.travis-ci.com/user/environment-variables#Default-Environment-Variables
+    - pip install --upgrade pip
+    - pip freeze
+    - CHECKOUT_DIR=$(pwd)
+    - echo ${CHECKOUT_DIR}
+    - echo ${TRAVIS_BRANCH}
+    - echo ${TRAVIS_COMMIT}
+    - echo ${TRAVIS_REPO_SLUG}
+    - echo ${GIT_TARGET_EXTRA}
+    - echo ${GIT_SOURCE_EXTRA}
+    - echo ${TRAVIS_PYTHON_VERSION}
+
+install:
+    - pip install -e .
+    - pip install coveralls nose
+
+script:
+    - coverage run --source=pathlib_revised -m nose -v
+
+after_success:
+    - ls
+    - coverage combine
+    - coverage report
+    - coveralls
+
+notifications:
+    irc: "irc.freenode.org#pylucid"
