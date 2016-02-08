@@ -96,11 +96,41 @@ class TestDeepPath(TestDeepPathBase):
         self.assertFalse(old_file.is_file())
         self.assertTrue(new_file.is_file())
 
+    def test_link(self):
+        old_file = Path2(self.deep_path, "old_file.txt")
+        with old_file.open("w") as f:
+            f.write("unittests!")
+
+        new_file = Path2(self.deep_path, "new_file.txt")
+        self.assertFalse(new_file.is_file())
+        old_file.link(new_file)
+        self.assertTrue(old_file.is_file())
+        self.assertTrue(new_file.is_file())
+        with new_file.open("r+") as f:
+            self.assertEqual(f.read(), "unittests!")
+            f.seek(0)
+            f.write("new content!")
+        with old_file.open("r") as f:
+            self.assertEqual(f.read(), "new content!")
+
     def test_unlink(self):
         file_path = Path2(self.deep_path, "file.txt")
         file_path.touch()
         file_path.unlink()
         self.assertFalse(file_path.is_file())
+
+    def test_copyfile(self):
+        old_file = Path2(self.deep_path, "old_file.txt")
+        with old_file.open("w") as f:
+            f.write("unittests!")
+
+        new_file = Path2(self.deep_path, "new_file.txt")
+        self.assertFalse(new_file.is_file())
+        old_file.copyfile(new_file)
+        self.assertTrue(old_file.is_file())
+        self.assertTrue(new_file.is_file())
+        with new_file.open("r") as f:
+            self.assertEqual(f.read(), "unittests!")
 
 
 @unittest.skipUnless(IS_NT, 'test requires a Windows-compatible system')
