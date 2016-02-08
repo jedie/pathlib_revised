@@ -1,0 +1,3 @@
+include AUTHORS README.creole MANIFEST.in
+recursive-include * *.ini *.cmd *.sh *.txt
+recursive-exclude * *.py[co]

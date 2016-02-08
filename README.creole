@@ -1,0 +1,23 @@
+== pathlib2
+
+* python 3.4 or newer only
+* Beta state
+
+Please, try, fork and contribute! ;)
+
+| {{https://travis-ci.org/jedie/pathlib2.svg|Build Status on travis-ci.org}} | [[https://travis-ci.org/jedie/pathlib2/|travis-ci.org/jedie/pathlib2]] |
+| {{https://ci.appveyor.com/api/projects/status/py5sl38ql3xciafc?svg=true|Build Status on appveyor.com}} | [[https://ci.appveyor.com/project/jedie/pathlib2/history|ci.appveyor.com/project/jedie/pathlib2]] |
+| {{https://coveralls.io/repos/jedie/pathlib2/badge.svg|Coverage Status on coveralls.io}} | [[https://coveralls.io/r/jedie/pathlib2|coveralls.io/r/jedie/pathlib2]] |
+| {{https://requires.io/github/jedie/pathlib2/requirements.svg?branch=master|Requirements Status on requires.io}} | [[https://requires.io/github/jedie/pathlib2/requirements/|requires.io/github/jedie/pathlib2/requirements/]] |
+
+
+== History
+
+* **dev**
+** move files form [[https://github.com/jedie/PyHardLinkBackup/tree/bb29eda6a0724c060f0e39773bdaecc325e9fea2|PyHardLinkBackup]]
+
+
+== Links
+
+* https://pypi.python.org/pypi/pathlib2/
+
