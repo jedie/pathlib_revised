@@ -73,12 +73,16 @@ install:
 test_script:
     - coverage run --source=pathlib_revised -m nose -v
 
+artifacts:
+    - path: .coverage
+
 on_finish:
     - coverage combine
     - coverage report
+    - ls -la
 
-    - set COVERALLS_REPO_TOKEN=JkT1M1GpIxJxA5GmDIm5Sk4br38hP5Bn1
-    - coveralls
+#    - set COVERALLS_REPO_TOKEN=JkT1M1GpIxJxA5GmDIm5Sk4br38hP5Bn1
+#    - coveralls
 
     # http://www.appveyor.com/docs/how-to/rdp-to-build-worker
     #- ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))

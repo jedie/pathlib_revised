@@ -29,14 +29,17 @@ before_install:
     - echo ${TRAVIS_PYTHON_VERSION}
 
 install:
-    - pip install coveralls nose
+    - pip install coveralls appveyor-artifacts nose
     - pip install -e .
 
 script:
     - coverage run --source=pathlib_revised -m nose -v
 
 after_success:
-    - ls
+    - ls -la
+    - mv .coverage .coverage.travis
+    - appveyor-artifacts -im --verbose download
+    - ls -la
     - coverage combine
     - coverage report
     - coveralls
