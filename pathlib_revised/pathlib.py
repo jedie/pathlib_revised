@@ -13,18 +13,6 @@ import pathlib
 import shutil
 
 
-# Use the built-in version of scandir/walk if possible, otherwise
-# use the scandir module version
-try:
-    from os import scandir # new in Python 3.5
-except ImportError:
-    # use https://pypi.python.org/pypi/scandir
-    try:
-        from scandir import scandir
-    except ImportError:
-        raise ImportError("For Python <3.5: Please install 'scandir' !")
-
-
 IS_WINDOWS = os.name == 'nt'
 
 
@@ -54,6 +42,16 @@ class SharedPathMethods:
         os.utime(self.extended_path, *args, **kwargs)
 
     def scandir(self):
+        # Use the built-in version of scandir/walk if possible, otherwise
+        # use the scandir module version
+        try:
+            from os import scandir # new in Python 3.5
+        except ImportError:
+            # use https://pypi.python.org/pypi/scandir
+            try:
+                from scandir import scandir
+            except ImportError:
+                raise ImportError("For Python <3.5: Please install 'scandir' !")
         return scandir(self.extended_path)
 
 
