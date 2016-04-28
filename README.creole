@@ -7,11 +7,13 @@ Expand the origin Python [[https://docs.python.org/3/library/pathlib.html|pathli
 
 There is also the class, called [[https://github.com/jedie/pathlib_revised/blob/master/pathlib_revised/dir_entry_path.py|DirEntryPath]] that holds more cached information than [[https://docs.python.org/3/library/os.html#os.DirEntry|os.DirEntry]]
 
+Used in [[https://github.com/jedie/PyHardLinkBackup|PyHardLinkBackup]]
 
-* python 3.4 or newer only
-* Beta state
+requirement: python 3.4 or newer
 
 Please, try, fork and contribute! ;)
+
+
 
 | {{https://travis-ci.org/jedie/pathlib_revised.svg|Build Status on travis-ci.org}} | [[https://travis-ci.org/jedie/pathlib_revised/|travis-ci.org/jedie/pathlib_revised]] |
 | {{https://ci.appveyor.com/api/projects/status/py5sl38ql3xciafc?svg=true|Build Status on appveyor.com}} | [[https://ci.appveyor.com/project/jedie/pathlib_revised/history|ci.appveyor.com/project/jedie/pathlib_revised]] |
@@ -181,5 +183,6 @@ stat.size......: 4802
 
 == Links
 
+* https://github.com/jedie/PyHardLinkBackup
 * https://pypi.python.org/pypi/pathlib_revised/
 
