@@ -123,6 +123,16 @@ class WindowsPath2(SharedPathMethods, pathlib.WindowsPath):
         """
         return super(WindowsPath2, Path2(self.path)).relative_to(Path2(other).path)
 
+    def glob(self, *args, **kwargs):
+        path_cls = type(self)
+        for p in super(SharedPathMethods, self).glob(*args, **kwargs):
+            yield path_cls(p)
+
+    def rglob(self, *args, **kwargs):
+        path_cls = type(self)
+        for p in super(SharedPathMethods, self).rglob(*args, **kwargs):
+            yield path_cls(p)
+
 
 class PosixPath2(SharedPathMethods, pathlib.PosixPath):
     @property
