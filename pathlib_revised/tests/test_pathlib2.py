@@ -132,6 +132,17 @@ class TestDeepPath(TestDeepPathBase):
         with new_file.open("r") as f:
             self.assertEqual(f.read(), "unittests!")
 
+    def test_rglob(self):
+        file_path = Path2(self.deep_path, "a test file.txt")
+        file_path.touch()
+
+        files = tuple(self.deep_path.rglob("*"))
+        self.assertEqual(len(files), 1)
+
+        f = files[0]
+        self.assertTrue(f.is_file())
+        self.assertEqual(f.extended_path, file_path.extended_path)
+
 
 @unittest.skipUnless(IS_NT, 'test requires a Windows-compatible system')
 class TestWindowsPath2(unittest.TestCase):
