@@ -173,6 +173,14 @@ stat.size......: 4802
 }}}
 
 
+== run tests
+
+e.g.:
+{{{
+~/pathlib-revised$ pip install -r requirements-test.txt
+~/pathlib-revised$ ./setup.py test
+}}}
+
 
 == History
 
