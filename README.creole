@@ -9,10 +9,9 @@ There is also the class, called [[https://github.com/jedie/pathlib_revised/blob/
 
 Used in PyHardLinkBackup: https://github.com/jedie/PyHardLinkBackup
 
-requirement: python 3.4 or newer
+requirement: python 3.6 or newer
 
 Please, try, fork and contribute! ;)
-
 
 
 | {{https://travis-ci.org/jedie/pathlib_revised.svg|Build Status on travis-ci.org}} | [[https://travis-ci.org/jedie/pathlib_revised/|travis-ci.org/jedie/pathlib_revised]] |
@@ -112,11 +111,6 @@ It's a generator that yields os.**[[https://docs.python.org/3/library/os.html#os
 You miss a method? Please, fork, implement, add tests and send a pull request! ;)
 
 
-=== misc
-
-Path2() hat the **.path** property, that is normally new in Python 3.4.5 and 3.5.2
-So you can use it with older Python Version, too.
-
 
 == DirEntryPath
 
@@ -177,8 +171,11 @@ stat.size......: 4802
 
 e.g.:
 {{{
-~/pathlib-revised$ pip install -r requirements-test.txt
-~/pathlib-revised$ ./setup.py test
+~$ git clone https://github.com/jedie/pathlib_revised.git
+~$ cd pathlib_revised
+~/pathlib_revised$ pipenv install
+~/pathlib_revised$ pipenv shell
+(pathlib_revised) ~/pathlib_revised$ tox
 }}}
 
 
