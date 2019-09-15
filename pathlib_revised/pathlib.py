@@ -7,11 +7,9 @@
     :license: GNU GPL v3 or above, see LICENSE for more details.
 """
 
-import logging
 import os
 import pathlib
 import shutil
-
 
 IS_WINDOWS = os.name == 'nt'
 
@@ -45,7 +43,7 @@ class SharedPathMethods:
         # Use the built-in version of scandir/walk if possible, otherwise
         # use the scandir module version
         try:
-            from os import scandir # new in Python 3.5
+            from os import scandir  # new in Python 3.5
         except ImportError:
             # use https://pypi.python.org/pypi/scandir
             try:
@@ -162,8 +160,6 @@ class Path2(pathlib.Path):
         """
         # Note: pathlib.Path.home() exist since in Python 3.5
         return cls(os.path.expanduser("~"))
-
-
 
 
 def pprint_path(path):

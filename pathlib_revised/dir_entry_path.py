@@ -7,7 +7,8 @@
     :license: GNU GPL v3 or above, see LICENSE for more details.
 """
 
-from pathlib_revised import Path2
+# pathlib_revised
+from pathlib_revised.pathlib import Path2
 
 
 class DirEntryPath:
@@ -40,19 +41,17 @@ class DirEntryPath:
         self.resolved_path = None
         self.resolve_error: contains the Error instance
     """
-    def __init__(self, dir_entry, onerror=print):
-        """
-        :param dir_entry: os.DirEntry() instance
-        """
-        self.dir_entry = dir_entry # os.DirEntry() instance
-        self.path = dir_entry.path # str or bytes of the path, from: os.DirEntry().path
 
-        self.is_symlink = dir_entry.is_symlink()
-        self.is_file = dir_entry.is_file(follow_symlinks=False)
-        self.is_dir = dir_entry.is_dir(follow_symlinks=False)
-        self.stat = dir_entry.stat(follow_symlinks=False)
+    def __init__(self, path, onerror=print):
+        self.path_instance = Path2(path)
+        self.path = str(self.path_instance)
 
-        self.path_instance = Path2(self.path)
+        self.is_symlink = self.path_instance.is_symlink()
+        self.is_file = self.path_instance.is_file()
+        self.is_dir = self.path_instance.is_dir()
+        self.stat = self.path_instance.stat()
+
+        Path2(self.path)
         try:
             self.resolved_path = self.path_instance.resolve()
         except (PermissionError, FileNotFoundError) as err:

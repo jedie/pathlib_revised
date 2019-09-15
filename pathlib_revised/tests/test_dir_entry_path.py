@@ -7,64 +7,57 @@
     :license: GNU GPL v3 or above, see LICENSE for more details.
 """
 
-from pathlib_revised import Path2, DirEntryPath
-from pathlib_revised.tests.base import BaseTempTestCase
-
 import logging
 import os
 import shutil
-import unittest
 import subprocess
+import unittest
 
-from pathlib_revised import Path2
-from pathlib_revised.pathlib import WindowsPath2, PosixPath2
-from pathlib_revised.tests.base import BaseTempTestCase
+# pathlib_revised
+import pytest
 
+from pathlib_revised import DirEntryPath, Path2
+from pathlib_revised.pathlib import PosixPath2, WindowsPath2
 
 IS_NT = os.name == 'nt'
 
 
-class TestDirEntryPath(BaseTempTestCase):
+def test_normal_file(tmp_path):
     """
     Test DirEntryPath() on all platforms
     """
-    def test_normal_file(self):
-        f = Path2("normal_file.txt")
-        f.touch()
-        self.assertTrue(f.is_file())
+    f = Path2(tmp_path, "normal_file.txt")
+    f.touch()
+    assert f.is_file() is True
 
-        p = Path2(self.temp_root_path)
-        dir_entries = tuple(p.scandir())
-        print(dir_entries)
-        self.assertEqual(len(dir_entries), 1)
+    p = Path2(tmp_path)
+    dir_entries = tuple(p.scandir())
+    print(dir_entries)
+    assert len(dir_entries) == 1
 
-        dir_entry = dir_entries[0]
+    dir_entry = dir_entries[0]
 
-        dir_entry_path = DirEntryPath(dir_entry)
-        print(dir_entry_path.pformat())
+    dir_entry_path = DirEntryPath(dir_entry)
+    print(dir_entry_path.pformat())
 
-        self.assertEqual(dir_entry_path.is_symlink, False)
-        self.assertEqual(dir_entry_path.different_path, False)
-        self.assertEqual(
-            dir_entry_path.resolved_path,
-            Path2(Path2(p, f).extended_path)
-        )
-        self.assertEqual(dir_entry_path.resolve_error, None)
+    assert dir_entry_path.is_symlink is False
+    assert dir_entry_path.different_path is False
+    assert dir_entry_path.resolved_path == Path2(Path2(p, f).extended_path)
+    assert dir_entry_path.resolve_error is None
 
 
-@unittest.skipUnless(IS_NT, 'test requires a Windows-compatible system')
-class TestDirEntryPathWindows(BaseTempTestCase):
-
+@pytest.mark.skipif(not IS_NT, reason='test requires a Windows-compatible system')
+class TestDirEntryPathWindows:
     # TODO: Make similar tests under Linux, too!
 
     def subprocess_run(self, *args, timeout=1, returncode=0, **kwargs):
         default_kwargs = {"shell": True}
         default_kwargs.update(kwargs)
         p = subprocess.Popen(args,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.STDOUT,
-            **kwargs
-        )
+                             stdout=subprocess.PIPE,
+                             stderr=subprocess.STDOUT,
+                             **kwargs
+                             )
         stderr_bytes = p.communicate(timeout=timeout)[0]
 
         # The following will not work:
@@ -79,12 +72,12 @@ class TestDirEntryPathWindows(BaseTempTestCase):
         #   sys.stdout.encoding = "cp850"
         txt = stderr_bytes.decode("cp850")
         self.assertEqual(p.returncode, returncode,
-            msg = (
-                "Command '%s' return code wrong!\n"
-                " *** command output: ***\n"
-                "%s"
-            ) % (" ".join(args), txt)
-        )
+                         msg=(
+                             "Command '%s' return code wrong!\n"
+                             " *** command output: ***\n"
+                             "%s"
+                         ) % (" ".join(args), txt)
+                         )
         return txt
 
     def test_subprocess_encoding(self):
@@ -100,12 +93,14 @@ class TestDirEntryPathWindows(BaseTempTestCase):
 
     def test_mklink(self):
         txt = self.mklink("/?",
-            returncode=1 # Why in hell is the return code for the help page ==1 ?!?
-        )
+                          returncode=1  # Why in hell is the return code for the help page ==1 ?!?
+                          )
         print(txt)
         self.assertIn("MKLINK [[/D] | [/H] | [/J]]", txt)
 
-    def test_directory_junction(self):
+    def test_directory_junction(self, tmp_path):
+        os.chdir(tmp_path)
+
         os.mkdir("dir1")
         dir1 = Path2("dir1").resolve()
         dir2 = Path2(self.temp_root_path, "dir2")
@@ -141,8 +136,8 @@ class TestDirEntryPathWindows(BaseTempTestCase):
         dir_entry_path2 = DirEntryPath(dir_entry2)
         print(dir_entry_path2.pformat())
         self.assertEqual(dir_entry_path2.is_symlink, False)
-        self.assertEqual(dir_entry_path2.different_path, True) # <<--- because of junction
-        self.assertEqual( # pointed to dir1 !
+        self.assertEqual(dir_entry_path2.different_path, True)  # <<--- because of junction
+        self.assertEqual(  # pointed to dir1 !
             dir_entry_path2.resolved_path,
             Path2(Path2(self.temp_root_path, "dir1").extended_path)
         )
@@ -150,25 +145,27 @@ class TestDirEntryPathWindows(BaseTempTestCase):
 
         # remove junction source and try again
         # dir1.unlink() # Will not work: PermissionError: [WinError 5] Zugriff verweigert
-        dir1.rename("new_name") # Will also break the junction ;)
+        dir1.rename("new_name")  # Will also break the junction ;)
 
         # check again:
         dir_entry_path2 = DirEntryPath(
             dir_entry2,
-            onerror=print # will be called, because resolve can't be done.
+            onerror=print  # will be called, because resolve can't be done.
         )
         print(dir_entry_path2.pformat())
         self.assertEqual(dir_entry_path2.is_symlink, False)
-        self.assertEqual(dir_entry_path2.different_path, True) # <<--- because of junction
+        self.assertEqual(dir_entry_path2.different_path, True)  # <<--- because of junction
 
         # can't be resole, because source was renamed:
         self.assertEqual(dir_entry_path2.resolved_path, None)
         self.assertIsInstance(dir_entry_path2.resolve_error, FileNotFoundError)
 
 
-@unittest.skipIf(IS_NT, 'test requires a POSIX-compatible system')
-class TestDirEntryPathPosix(BaseTempTestCase):
-    def test_symlink(self):
+@pytest.mark.skipif(not IS_NT, reason='test requires a POSIX-compatible system')
+class TestDirEntryPathPosix:
+    def test_symlink(self, tmp_path):
+        os.chdir(tmp_path)
+
         src_file = Path2("source_file.txt")
         src_file.touch()
 
@@ -192,7 +189,9 @@ class TestDirEntryPathPosix(BaseTempTestCase):
             else:
                 self.fail()
 
-            self.assertEqual(dir_entry_path.resolved_path, Path2(self.temp_root_path, "source_file.txt"))
+            self.assertEqual(
+                dir_entry_path.resolved_path, Path2(
+                    self.temp_root_path, "source_file.txt"))
 
         # Create a broken symlink, by deleting the source file:
         src_file.unlink()
@@ -204,8 +203,9 @@ class TestDirEntryPathPosix(BaseTempTestCase):
         info = dir_entry_path.pformat()
         print(info)
         self.assertEqual(dir_entry_path.path, "./destination.txt")
-        self.assertEqual(dir_entry_path.resolved_path, None) # <- broken, so can't be resolve
-        self.assertIsInstance(dir_entry_path.resolve_error, FileNotFoundError) # <- the error instance
+        self.assertEqual(dir_entry_path.resolved_path, None)  # <- broken, so can't be resolve
+        self.assertIsInstance(
+            dir_entry_path.resolve_error,
+            FileNotFoundError)  # <- the error instance
         self.assertTrue(dir_entry_path.is_symlink)
         self.assertFalse(dir_entry_path.is_file)
-

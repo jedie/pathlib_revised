@@ -16,26 +16,26 @@
 
 from __future__ import absolute_import, division, print_function
 
-
 import os
 import sys
 
-from setuptools import setup, find_packages
+from setuptools import find_packages, setup
 
 from pathlib_revised import __version__
-
 
 PACKAGE_ROOT = os.path.dirname(os.path.abspath(__file__))
 
 
 # convert README.creole on-the-fly to ReSt, see also:
 # https://github.com/jedie/python-creole/wiki/Use-In-Setup/
-check_readme="publish" in sys.argv or "check" in sys.argv or "register" in sys.argv or "sdist" in sys.argv or "--long-description" in sys.argv
+check_readme = "publish" in sys.argv or "check" in sys.argv or "register" in sys.argv or "sdist" in sys.argv or "--long-description" in sys.argv
 try:
     from creole.setup_utils import get_long_description
 except ImportError as err:
     if check_readme:
-        raise ImportError("%s - Please install python-creole >= v0.8 -  e.g.: pip install python-creole" % err)
+        raise ImportError(
+            "%s - Please install python-creole >= v0.8 -  e.g.: pip install python-creole" %
+            err)
     long_description = None
 else:
     if check_readme:
@@ -90,7 +90,8 @@ if "publish" in sys.argv:
         """ 'verbose' version of subprocess.check_output() """
         call_info = "Call: %r" % " ".join(args)
         try:
-            output = subprocess.check_output(args, universal_newlines=True, stderr=subprocess.STDOUT)
+            output = subprocess.check_output(
+                args, universal_newlines=True, stderr=subprocess.STDOUT)
         except subprocess.CalledProcessError as err:
             print("\n***ERROR:")
             print(err.output)
@@ -141,6 +142,7 @@ if "publish" in sys.argv:
     verbose_check_call("git", "push")
 
     print("\nCleanup old builds:")
+
     def rmtree(path):
         path = os.path.abspath(path)
         if os.path.isdir(path):
@@ -150,7 +152,7 @@ if "publish" in sys.argv:
     rmtree("./build")
 
     print("\nbuild but don't upload...")
-    log_filename="build.log"
+    log_filename = "build.log"
     with open(log_filename, "a") as log:
         call_info, output = verbose_check_output(
             sys.executable or "python",
@@ -193,29 +195,20 @@ setup(
     description='pathlib_revised is a enhanced version of pathlib',
     long_description=long_description,
     keywords="pathlib Windows Linux",
-    license = "GNU General Public License (GNU GPL v3 or above)",
+    license="GNU General Public License (GNU GPL v3 or above)",
     author=get_authors(),
     maintainer="Jens Diemer",
     url='https://github.com/jedie/pathlib_revised',
     packages=find_packages(),
-    include_package_data=True, # include package data under version control
-    install_requires=[
-    ],
-    extras_require={
-        ':python_version=="3.4"': [
-            "scandir", # https://pypi.python.org/pypi/scandir
-        ],
-    },
-    # entry_points={'console_scripts': [
-    # ]},
+    include_package_data=True,  # include package data under version control
     zip_safe=False,
     classifiers=[
         "Development Status :: 4 - Beta",
-       #  "Development Status :: 5 - Production/Stable",
+        #  "Development Status :: 5 - Production/Stable",
         "Intended Audience :: Developers",
         "License :: OSI Approved :: GNU General Public License (GPL)",
-        "Programming Language :: Python :: 3.4",
-        "Programming Language :: Python :: 3.5",
+        "Programming Language :: Python :: 3.6",
+        "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3 :: Only",
         "Operating System :: OS Independent",
         "Topic :: Software Development",
