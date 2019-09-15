@@ -183,8 +183,9 @@ e.g.:
 
 * **dev** - [[https://github.com/jedie/pathlib_revised/compare/v0.2.0...master|compare v0.2.0...master]]
 ** TBC
-* 15.09.2019 - [[https://github.com/jedie/pathlib_revised/compare/v0.1.0...v0.2.0|compare v0.1.0...v0.2.0]]
+* 15.09.2019 - [[https://github.com/jedie/pathlib_revised/compare/v0.1.0...v0.2.0|compare v0.1.0...v0.2.0]] **WIP**
 ** refactoring:
+*** {{{DirEntryPath}}} don't need a {{{os.DirEntry()}}} instance, so {{{.dir_entry}}} attribute was removed
 *** use pipenv for development
 *** tests used pytest
 * 08.02.2016 - v0.1.0

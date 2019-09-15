@@ -51,7 +51,6 @@ class DirEntryPath:
         self.is_dir = self.path_instance.is_dir()
         self.stat = self.path_instance.stat()
 
-        Path2(self.path)
         try:
             self.resolved_path = self.path_instance.resolve()
         except (PermissionError, FileNotFoundError) as err:
