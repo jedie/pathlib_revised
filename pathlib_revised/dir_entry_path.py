@@ -71,7 +71,7 @@ class DirEntryPath:
     def pformat(self):
         return "\n".join((
             " *** %s :" % self,
-            "path.......: %r" % self.path,
+            "path...........: %r" % self.path,
             "path instance..: %r" % self.path_instance,
             "resolved path..: %r" % self.resolved_path,
             "resolve error..: %r" % self.resolve_error,
