@@ -116,15 +116,15 @@ You miss a method? Please, fork, implement, add tests and send a pull request! ;
 
 The [[https://github.com/jedie/pathlib_revised/blob/master/pathlib_revised/dir_entry_path.py|DirEntryPath]] holds more cached information:
 
-| //instance//**.dir_entry**   | os.DirEntry() instance
-| //instance//**.path**        | str or bytes of the path, from: //os.DirEntry()//**.path**
-| //instance//**.is_symlink    | bool from //os.DirEntry()//**.is_symlink()**
-| //instance//**.is_file       | bool from //os.DirEntry()//**.is_file(follow_symlinks=False)**
-| //instance//**.is_dir        | bool from //os.DirEntry()//**.is_dir(follow_symlinks=False)**
-| //instance//**.stat          | bool from //os.DirEntry()//**.stat(follow_symlinks=False)**
 | //instance//**.path_instance | **Path2()** instance
 | //instance//**.resolved_path | **Path2()** instance from **.resolve()** (If resolve errored: **None**)
 | //instance//**.resolve_error | The error Instance, if .resolve() failed.
+| //instance//**.path**        | string of the path, same as: {{{str(instance.path_instande)}}}
+| //instance//**.is_symlink    | bool 
+| //instance//**.is_file       | bool 
+| //instance//**.is_dir        | bool 
+| //instance//**.stat          | bool
+
 
 
 Create a instance by feeding a [[https://docs.python.org/3/library/os.html#os.DirEntry|os.DirEntry]] instance, e.g.:
@@ -135,7 +135,7 @@ Create a instance by feeding a [[https://docs.python.org/3/library/os.html#os.Di
 ...     dir_entry_path = DirEntryPath(dir_entry)
 ...     print(dir_entry_path.pformat())
  *** <DirEntryPath foo/file1> :
-path.......: 'foo/file1'
+path...........: 'foo/file1'
 path instance..: PosixPath2('foo/file1')
 resolved path..: PosixPath2('/home/bar/foo/file1')
 resolve error..: None
@@ -145,7 +145,7 @@ is file........: False
 is dir.........: True
 stat.size......: 38
  *** <DirEntryPath foo/BrokenSymlink.ext> :
-path.......: 'foo/BrokenSymlink.ext'
+path...........: 'foo/BrokenSymlink.ext'
 path instance..: PosixPath2('foo/BrokenSymlink.ext')
 resolved path..: None
 resolve error..: FileNotFoundError(2, 'No such file or directory')
@@ -155,7 +155,7 @@ is file........: False
 is dir.........: False
 stat.size......: 15
  *** <DirEntryPath foo/README.creole> :
-path.......: 'foo/README.creole'
+path...........: 'foo/README.creole'
 path instance..: PosixPath2('foo/README.creole')
 resolved path..: PosixPath2('/home/bar/foo/README.creole')
 resolve error..: None
