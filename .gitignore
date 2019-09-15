@@ -10,6 +10,7 @@ __pycache__/
 .Python
 env/
 build/
+build.log
 develop-eggs/
 dist/
 downloads/
@@ -20,9 +21,13 @@ lib64/
 parts/
 sdist/
 var/
+wheels/
 *.egg-info/
 .installed.cfg
 *.egg
+
+# OS generated files
+.DS_Store
 
 # PyInstaller
 #  Usually these files are written by a python script from a template
@@ -42,24 +47,13 @@ htmlcov/
 .cache
 nosetests.xml
 coverage.xml
-*,cover
+*.cover
 .hypothesis/
+.pytest_cache/
 
 # Translations
 *.mo
 *.pot
 
-# Django stuff:
-*.log
-
-# Sphinx documentation
-docs/_build/
-
-# PyBuilder
-target/
-
-#Ipython Notebook
-.ipynb_checkpoints
-
-# PyCharm
 .idea
+persisted_queue_*

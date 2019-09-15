@@ -7,12 +7,11 @@ Expand the origin Python [[https://docs.python.org/3/library/pathlib.html|pathli
 
 There is also the class, called [[https://github.com/jedie/pathlib_revised/blob/master/pathlib_revised/dir_entry_path.py|DirEntryPath]] that holds more cached information than [[https://docs.python.org/3/library/os.html#os.DirEntry|os.DirEntry]]
 
-Used in [[https://github.com/jedie/PyHardLinkBackup|PyHardLinkBackup]]
+Used in PyHardLinkBackup: https://github.com/jedie/PyHardLinkBackup
 
-requirement: python 3.4 or newer
+requirement: python 3.6 or newer
 
 Please, try, fork and contribute! ;)
-
 
 
 | {{https://travis-ci.org/jedie/pathlib_revised.svg|Build Status on travis-ci.org}} | [[https://travis-ci.org/jedie/pathlib_revised/|travis-ci.org/jedie/pathlib_revised]] |
@@ -112,11 +111,6 @@ It's a generator that yields os.**[[https://docs.python.org/3/library/os.html#os
 You miss a method? Please, fork, implement, add tests and send a pull request! ;)
 
 
-=== misc
-
-Path2() hat the **.path** property, that is normally new in Python 3.4.5 and 3.5.2
-So you can use it with older Python Version, too.
-
 
 == DirEntryPath
 
@@ -177,13 +171,23 @@ stat.size......: 4802
 
 e.g.:
 {{{
-~/pathlib-revised$ pip install -r requirements-test.txt
-~/pathlib-revised$ ./setup.py test
+~$ git clone https://github.com/jedie/pathlib_revised.git
+~$ cd pathlib_revised
+~/pathlib_revised$ pipenv install
+~/pathlib_revised$ pipenv shell
+(pathlib_revised) ~/pathlib_revised$ tox
 }}}
 
 
 == History
 
+* **dev** - [[https://github.com/jedie/pathlib_revised/compare/v0.2.0...master|compare v0.2.0...master]]
+** TBC
+* 15.09.2019 - [[https://github.com/jedie/pathlib_revised/compare/v0.1.0...v0.2.0|compare v0.1.0...v0.2.0]] **WIP**
+** refactoring:
+*** {{{DirEntryPath}}} don't need a {{{os.DirEntry()}}} instance, so {{{.dir_entry}}} attribute was removed
+*** use pipenv for development
+*** tests used pytest
 * 08.02.2016 - v0.1.0
 ** code cleanup + more tests
 ** move files form [[https://github.com/jedie/PyHardLinkBackup/tree/bb29eda6a0724c060f0e39773bdaecc325e9fea2|PyHardLinkBackup]]
@@ -191,6 +195,6 @@ e.g.:
 
 == Links
 
-* https://github.com/jedie/PyHardLinkBackup
+* https://github.com/jedie/pathlib_revised/
 * https://pypi.python.org/pypi/pathlib_revised/
 

@@ -1,8 +1,10 @@
+# Config file for automatic testing at travis-ci.org
+
 language: python
 
 python:
-    - "3.4"
-    - "3.5"
+    - "3.6"
+    - "3.7"
 
 sudo: false
 
@@ -15,34 +17,27 @@ os:
 virtualenv:
     system_site_packages: false
 
+env:
+    global:
+        - PIPENV_VENV_IN_PROJECT=1
+        - PIPENV_IGNORE_VIRTUALENVS=1
+
 before_install:
-    # https://docs.travis-ci.com/user/environment-variables#Default-Environment-Variables
-    - pip install --upgrade pip
-    - pip freeze
-    - CHECKOUT_DIR=$(pwd)
-    - echo ${CHECKOUT_DIR}
-    - echo ${TRAVIS_BRANCH}
-    - echo ${TRAVIS_COMMIT}
-    - echo ${TRAVIS_REPO_SLUG}
-    - echo ${GIT_TARGET_EXTRA}
-    - echo ${GIT_SOURCE_EXTRA}
-    - echo ${TRAVIS_PYTHON_VERSION}
+    - pip install -U pip
 
 install:
-    - pip install coveralls appveyor-artifacts nose
-    - pip install -e .
+    - pip install -U tox-travis appveyor-artifacts coveralls codecov
 
 script:
-    - coverage run --source=pathlib_revised -m nose -v
+    - tox
 
 after_success:
-    - ls -la
+    - ls
+    - coverage report
     - mv .coverage .coverage.travis
-    - appveyor-artifacts -im --verbose download
-    - ls -la
+    - appveyor-artifacts -m download
     - coverage combine
     - coverage report
     - coveralls
-
-notifications:
-    irc: "irc.freenode.org#pylucid"
+    # https://github.com/codecov/codecov-bash
+    - bash <(curl -s https://codecov.io/bash)
