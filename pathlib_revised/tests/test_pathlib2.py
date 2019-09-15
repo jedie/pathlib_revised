@@ -7,10 +7,7 @@
     :license: GNU GPL v3 or above, see LICENSE for more details.
 """
 
-import logging
 import os
-import shutil
-import subprocess
 import unittest
 
 # pathlib_revised

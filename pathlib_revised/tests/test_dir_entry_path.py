@@ -7,17 +7,13 @@
     :license: GNU GPL v3 or above, see LICENSE for more details.
 """
 
-import logging
 import os
-import shutil
 import subprocess
-import unittest
 
-# pathlib_revised
 import pytest
 
+# pathlib_revised
 from pathlib_revised import DirEntryPath, Path2
-from pathlib_revised.pathlib import PosixPath2, WindowsPath2
 
 IS_NT = os.name == 'nt'
 
